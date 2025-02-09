@@ -18,18 +18,26 @@ const API_KEY = 'rnd_pLGfjJXA3bYJfD3kXspPVO5ggYzg';
 
 const RENDER_API_URL = 'https://api.render.com/v1/services?includePreviews=true&limit=20';
 
-app.get('application/json', async (req, res) => {
+
+
+// הגדרת מסלול GET לקבלת השירותים
+app.get('/services', async (req, res) => {
   try {
+    // שליחת בקשה ל-Render API עם כותרת Authorization
     const response = await axios.get(RENDER_API_URL, {
       headers: {
-        'Authorization': `Bearer ${API_KEY}`
-      }
+        'Authorization': `Bearer ${API_KEY}`,
+      },
     });
 
+    // החזרת המידע ללקוח כ-JSON
     res.json(response.data);
   } catch (error) {
+    // במקרה של שגיאה, הדפסתה והחזרת הודעת שגיאה
     console.error('Error fetching services:', error);
-    res.status(500).json({ error: 'Failed to fetch services' });
+    res.status(500).json({ error: 'Failed to fetch services from Render' });
   }
 });
+
+
 
